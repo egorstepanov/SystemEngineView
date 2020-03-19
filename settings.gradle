@@ -1,0 +1,2 @@
+rootProject.name='SystemEngineView'
+include ':app'
