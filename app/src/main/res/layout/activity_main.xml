@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.systemengineview.MainActivity">
 
-    <mozilla.components.browser.engine.system.SystemEngineView
+    <mozilla.components.concept.engine.EngineView
         android:id="@+id/engineView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

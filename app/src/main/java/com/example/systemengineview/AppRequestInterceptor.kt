@@ -5,6 +5,7 @@
 package com.example.systemengineview
 
 import android.content.Context
+import android.util.Log
 import mozilla.components.browser.errorpages.ErrorPages
 import mozilla.components.browser.errorpages.ErrorType
 import mozilla.components.concept.engine.EngineSession
@@ -18,7 +19,7 @@ class AppRequestInterceptor(private val context: Context) : RequestInterceptor {
         hasUserGesture: Boolean,
         isSameDomain: Boolean
     ): RequestInterceptor.InterceptionResponse? {
-
+        Log.i("URL", uri)
         return super.onLoadRequest(engineSession, uri, hasUserGesture, isSameDomain)
     }
 
@@ -37,8 +38,9 @@ class AppRequestInterceptor(private val context: Context) : RequestInterceptor {
             htmlResource = riskLevel.htmlRes
         )
 
-//        return RequestInterceptor.ErrorResponse.Uri(errorPageUri.replace("resource://android/assets", "file:///android_asset"))
-        return RequestInterceptor.ErrorResponse.Uri(errorPageUri)
+//        return RequestInterceptor.ErrorResponse.Uri(errorPageUri)
+        return RequestInterceptor.ErrorResponse.Uri(errorPageUri.replace("resource://android/assets", "file:///android_asset"))
+//        return RequestInterceptor.ErrorResponse.Content(ErrorPages.createErrorPage(context, improvedErrorType, uri, R.raw.low_and_medium_risk_error_pages, R.raw.low_and_medium_risk_error_style))
     }
 
     /**

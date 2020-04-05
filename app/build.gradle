@@ -36,7 +36,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
-    implementation 'org.mozilla.components:browser-engine-system:36.0.2'
-    implementation 'org.mozilla.components:concept-engine:36.0.2'
-    implementation 'org.mozilla.components:browser-session:36.0.2'
+    implementation 'org.mozilla.components:browser-engine-system:37.0.3'
+    implementation 'org.mozilla.components:concept-engine:37.0.3'
+    implementation 'org.mozilla.components:browser-session:37.0.3'
 }
