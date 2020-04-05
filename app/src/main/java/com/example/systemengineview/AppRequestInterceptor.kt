@@ -40,7 +40,7 @@ class AppRequestInterceptor(private val context: Context) : RequestInterceptor {
 
 //        return RequestInterceptor.ErrorResponse.Uri(errorPageUri)
         return RequestInterceptor.ErrorResponse.Uri(errorPageUri.replace("resource://android/assets", "file:///android_asset"))
-//        return RequestInterceptor.ErrorResponse.Content(ErrorPages.createErrorPage(context, improvedErrorType, uri, R.raw.low_and_medium_risk_error_pages, R.raw.low_and_medium_risk_error_style))
+//        return RequestInterceptor.ErrorResponse.Content(ErrorPages.createErrorPage(context, improvedErrorType, uri))
     }
 
     /**
