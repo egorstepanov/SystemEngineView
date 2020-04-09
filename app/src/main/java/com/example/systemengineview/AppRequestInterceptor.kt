@@ -6,6 +6,7 @@ package com.example.systemengineview
 
 import android.content.Context
 import android.util.Log
+import mozilla.components.browser.engine.system.SystemEngineSession
 import mozilla.components.browser.errorpages.ErrorPages
 import mozilla.components.browser.errorpages.ErrorType
 import mozilla.components.concept.engine.EngineSession
@@ -29,18 +30,33 @@ class AppRequestInterceptor(private val context: Context) : RequestInterceptor {
         uri: String?
     ): RequestInterceptor.ErrorResponse? {
         val improvedErrorType = improveErrorType(errorType)
-        val riskLevel = getRiskLevel(improvedErrorType)
+        val imageNeeded = false
 
-        val errorPageUri = ErrorPages.createUrlEncodedErrorPage(
-            context = context,
-            errorType = improvedErrorType,
-            uri = uri,
-            htmlResource = riskLevel.htmlRes
-        )
+        val errorPage = if (imageNeeded) {
+            val riskLevel = getRiskLevel(improvedErrorType)
+            ErrorPages.createUrlEncodedErrorPage(
+                context = context,
+                errorType = improvedErrorType,
+                uri = uri,
+                htmlResource = riskLevel.htmlRes
+            ).replace("resource://android/assets", "file:///android_asset")
+        } else {
+            ErrorPages.createErrorPage(context, improvedErrorType, uri)
+        }
 
-//        return RequestInterceptor.ErrorResponse.Uri(errorPageUri)
-        return RequestInterceptor.ErrorResponse.Uri(errorPageUri.replace("resource://android/assets", "file:///android_asset"))
-//        return RequestInterceptor.ErrorResponse.Content(ErrorPages.createErrorPage(context, improvedErrorType, uri))
+//        return if (imageNeeded) RequestInterceptor.ErrorResponse.Uri(errorPage)
+//        else RequestInterceptor.ErrorResponse.Content(errorPage)
+
+        // Workaround:
+        // For url based error page we need do window.history.back() on click button;
+        // For content based error page we need add historyUrl;
+        // And return null.
+        return (context.app.sessionManager.getEngineSession() as SystemEngineSession).webView.apply {
+            if (imageNeeded) loadUrl(errorPage)
+            else loadDataWithBaseURL(uri, errorPage, "text/html", "UTF8", uri)
+        }.run {
+            null
+        }
     }
 
     /**

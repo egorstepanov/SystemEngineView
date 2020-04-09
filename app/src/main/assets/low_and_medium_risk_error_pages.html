@@ -29,7 +29,7 @@
     </div>
 
     <!-- Retry Button -->
-    <button id="errorTryAgain" onclick="window.location.reload()"></button>
+    <button id="errorTryAgain" onclick="document.documentURI.startsWith('file:') ? window.history.back() : window.location.reload()"></button>
 
     <!-- Advanced Button -->
     <button id="advancedButton" class="buttonSecondary hidden" onclick="toggleAdvancedAndScroll()"></button>
